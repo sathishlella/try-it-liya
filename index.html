@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Question ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Envelope Design */
+        .envelope {
+            position: relative;
+            width: 350px;
+            height: 250px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
+            border-radius: 5px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-bottom: 140px solid #ff6b9d;
+            top: 0;
+            left: 0;
+            transform-origin: top center;
+            transition: transform 0.6s ease;
+            z-index: 3;
+        }
+
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 140px solid #ff85a6;
+            top: -140px;
+            left: -175px;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            z-index: 4;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .letter {
+            position: absolute;
+            width: 90%;
+            height: 85%;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 2;
+            transition: transform 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope.open .letter {
+            transform: translate(-50%, -70%);
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -50px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            animation: bounce 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Question Section */
+        .question-section {
+            display: none;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .question-section.active {
+            display: block;
+        }
+
+        .question-text {
+            font-size: 42px;
+            color: #ff1493;
+            margin-bottom: 20px;
+            animation: fadeInScale 0.8s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hint-text {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 0 20px rgba(240, 147, 251, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(0,0,0,0.3), 0 0 40px rgba(240, 147, 251, 0.8);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.5), 0 0 50px rgba(240, 147, 251, 1);
+            animation: none;
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.1);
+        }
+
+        /* Celebration */
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .celebration.active {
+            display: flex;
+        }
+
+        .congrats-text {
+            font-size: 72px;
+            color: white;
+            text-align: center;
+            animation: celebrationPulse 1s infinite;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        @keyframes celebrationPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .heart-rain {
+            position: absolute;
+            font-size: 30px;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        .rings {
+            position: absolute;
+            font-size: 120px;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .love-message {
+            font-size: 32px;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .envelope {
+                width: 280px;
+                height: 200px;
+            }
+
+            .envelope-flap {
+                border-left: 140px solid transparent;
+                border-right: 140px solid transparent;
+                border-bottom: 110px solid #ff6b9d;
+            }
+
+            .envelope-flap::before {
+                border-left: 140px solid transparent;
+                border-right: 140px solid transparent;
+                border-top: 110px solid #ff85a6;
+                top: -110px;
+                left: -140px;
+            }
+
+            .heart-seal {
+                top: 80px;
+                font-size: 32px;
+            }
+
+            .click-hint {
+                font-size: 16px;
+            }
+
+            .question-text {
+                font-size: 32px;
+                padding: 0 20px;
+            }
+
+            .hint-text {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 20px;
+            }
+
+            .congrats-text {
+                font-size: 48px;
+                padding: 0 20px;
+            }
+
+            .love-message {
+                font-size: 24px;
+                padding: 0 20px;
+            }
+
+            .rings {
+                font-size: 80px;
+            }
+
+            .letter {
+                padding: 20px;
+            }
+
+            .letter div:first-child {
+                font-size: 22px !important;
+            }
+
+            .letter div:last-child {
+                font-size: 16px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .envelope {
+                width: 240px;
+                height: 170px;
+            }
+
+            .envelope-flap {
+                border-left: 120px solid transparent;
+                border-right: 120px solid transparent;
+                border-bottom: 95px solid #ff6b9d;
+            }
+
+            .envelope-flap::before {
+                border-left: 120px solid transparent;
+                border-right: 120px solid transparent;
+                border-top: 95px solid #ff85a6;
+                top: -95px;
+                left: -120px;
+            }
+
+            .question-text {
+                font-size: 26px;
+            }
+
+            .btn {
+                padding: 10px 25px;
+                font-size: 18px;
+            }
+
+            .congrats-text {
+                font-size: 36px;
+            }
+
+            .love-message {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Envelope Section -->
+        <div class="envelope" id="envelope">
+            <div class="envelope-body"></div>
+            <div class="envelope-flap"></div>
+            <div class="heart-seal">❤️</div>
+            <div class="letter">
+                <div style="font-size: 28px; color: #ff1493; margin-bottom: 10px;">Dear Liya 💕</div>
+                <div style="font-size: 18px; color: #666; font-style: italic;">Click to open my heart...</div>
+            </div>
+            <div class="click-hint">Click the envelope! 👆</div>
+        </div>
+
+        <!-- Question Section -->
+        <div class="question-section" id="questionSection">
+            <div class="question-text">Liya, Will You Be My Wife? 💍</div>
+            <div class="hint-text">(Hint: There's only one right answer, Ammuu! 😉)</div>
+            <div class="buttons-container" id="buttonsContainer">
+                <button class="btn btn-yes" id="btnYes">Yes ❤️</button>
+                <button class="btn btn-no" id="btnNo">No 💔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Section -->
+    <div class="celebration" id="celebration">
+        <div class="rings">💍</div>
+        <div class="congrats-text">Liya Said YES! 🎉</div>
+        <div class="love-message">
+            Ammuu, I can't wait to spend<br>
+            forever with you! 💕<br>
+            <br>
+            You've made me the happiest person alive! ❤️💍
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const questionSection = document.getElementById('questionSection');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        const celebration = document.getElementById('celebration');
+
+        let noButtonEscapes = 0;
+
+        // Open envelope on click/touch
+        envelope.addEventListener('click', openEnvelope);
+        envelope.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            openEnvelope();
+        });
+
+        function openEnvelope() {
+            envelope.classList.add('open');
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                questionSection.classList.add('active');
+            }, 600);
+        }
+
+        // Yes button - Direct to celebration! (Desktop and Mobile)
+        btnYes.addEventListener('click', showCelebrationSequence);
+        btnYes.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            showCelebrationSequence();
+        });
+
+        function showCelebrationSequence() {
+            // Hide buttons
+            buttonsContainer.style.display = 'none';
+            
+            // Show celebration
+            setTimeout(() => {
+                showCelebration();
+            }, 300);
+        }
+
+        // No button escapes on hover and click (Desktop) and touch (Mobile)
+        function moveNoButton(event) {
+            // Prevent default action on mobile
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            noButtonEscapes++;
+            
+            // Calculate random position with mobile-safe margins
+            const buttonWidth = 150;
+            const buttonHeight = 80;
+            const maxX = window.innerWidth - buttonWidth - 20;
+            const maxY = window.innerHeight - buttonHeight - 20;
+            
+            const randomX = Math.max(20, Math.random() * maxX);
+            const randomY = Math.max(20, Math.random() * maxY);
+            
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+            btnNo.style.transform = 'none';
+            btnNo.style.zIndex = '5';
+
+            // Add shake animation
+            btnNo.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                btnNo.style.animation = '';
+            }, 500);
+
+            // Change button text based on escapes
+            if (noButtonEscapes === 3) {
+                btnNo.textContent = "No way! 😜";
+            } else if (noButtonEscapes === 5) {
+                btnNo.textContent = "Not happening! 😝";
+            } else if (noButtonEscapes === 7) {
+                btnNo.textContent = "Give up! 😄";
+            } else if (noButtonEscapes === 10) {
+                btnNo.textContent = "Just click YES! ❤️";
+            }
+        }
+
+        // Desktop: mouseenter for hover escape
+        btnNo.addEventListener('mouseenter', moveNoButton);
+        
+        // Mobile & Desktop: touchstart and click
+        btnNo.addEventListener('touchstart', function(e) {
+            moveNoButton(e);
+        });
+        
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
+            moveNoButton(e);
+        });
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        function showCelebration() {
+            celebration.classList.add('active');
+            
+            // Create continuous heart rain
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 80);
+            }
+            
+            // Create multiple rounds of fireworks
+            for (let round = 0; round < 3; round++) {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createFirework();
+                    }, round * 2000 + i * 250);
+                }
+            }
+            
+            // Continue heart rain
+            setInterval(() => {
+                createHeart();
+            }, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-rain';
+            heart.textContent = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            celebration.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function createFirework() {
+            const colors = ['#ff0', '#f0f', '#0ff', '#ff6b6b', '#4ecdc4', '#ffe66d'];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 100 + Math.random() * 100;
+                particle.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                particle.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+                
+                celebration.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
