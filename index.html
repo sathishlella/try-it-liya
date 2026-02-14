@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +55,7 @@
             height: 100%;
             background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
             border-radius: 5px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
         .envelope-flap {
@@ -63,7 +64,8 @@
             height: 0;
             border-left: 175px solid transparent;
             border-right: 175px solid transparent;
-            border-bottom: 140px solid #ff6b9d;
+            border-top: 140px solid #ff6b9d;
+            /* Triangle pointing DOWN */
             top: 0;
             left: 0;
             transform-origin: top center;
@@ -71,17 +73,7 @@
             z-index: 3;
         }
 
-        .envelope-flap::before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 175px solid transparent;
-            border-right: 175px solid transparent;
-            border-top: 140px solid #ff85a6;
-            top: -140px;
-            left: -175px;
-        }
+        /* Removed ::before as it was creating the duplicate floating triangle */
 
         .envelope.open .envelope-flap {
             transform: rotateX(180deg);
@@ -98,8 +90,15 @@
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
+
+            0%,
+            100% {
+                transform: translateX(-50%) scale(1);
+            }
+
+            50% {
+                transform: translateX(-50%) scale(1.1);
+            }
         }
 
         .letter {
@@ -112,7 +111,7 @@
             transform: translate(-50%, -50%);
             border-radius: 5px;
             padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             z-index: 2;
             transition: transform 0.6s ease;
             display: flex;
@@ -132,12 +131,19 @@
             color: white;
             font-size: 18px;
             animation: bounce 2s infinite;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         /* Question Section */
@@ -156,7 +162,7 @@
             color: #ff1493;
             margin-bottom: 20px;
             animation: fadeInScale 0.8s ease;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .hint-text {
@@ -172,6 +178,7 @@
                 opacity: 0;
                 transform: scale(0.5);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -196,7 +203,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
@@ -211,11 +218,14 @@
         }
 
         @keyframes pulseGlow {
-            0%, 100% {
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 0 20px rgba(240, 147, 251, 0.4);
+
+            0%,
+            100% {
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(240, 147, 251, 0.4);
             }
+
             50% {
-                box-shadow: 0 5px 25px rgba(0,0,0,0.3), 0 0 40px rgba(240, 147, 251, 0.8);
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3), 0 0 40px rgba(240, 147, 251, 0.8);
             }
         }
 
@@ -260,13 +270,20 @@
             color: white;
             text-align: center;
             animation: celebrationPulse 1s infinite;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
             margin-bottom: 30px;
         }
 
         @keyframes celebrationPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .heart-rain {
@@ -281,6 +298,7 @@
                 transform: translateY(-100px) rotate(0deg);
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
@@ -300,6 +318,7 @@
                 transform: translate(0, 0);
                 opacity: 1;
             }
+
             100% {
                 transform: translate(var(--x), var(--y));
                 opacity: 0;
@@ -313,8 +332,13 @@
         }
 
         @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .love-message {
@@ -326,8 +350,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Mobile Responsive Styles */
@@ -441,6 +470,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Envelope Section -->
@@ -490,7 +520,7 @@
 
         // Open envelope on click/touch
         envelope.addEventListener('click', openEnvelope);
-        envelope.addEventListener('touchstart', function(e) {
+        envelope.addEventListener('touchstart', function (e) {
             e.preventDefault();
             openEnvelope();
         });
@@ -505,7 +535,7 @@
 
         // Yes button - Direct to celebration! (Desktop and Mobile)
         btnYes.addEventListener('click', showCelebrationSequence);
-        btnYes.addEventListener('touchstart', function(e) {
+        btnYes.addEventListener('touchstart', function (e) {
             e.preventDefault();
             showCelebrationSequence();
         });
@@ -513,7 +543,7 @@
         function showCelebrationSequence() {
             // Hide buttons
             buttonsContainer.style.display = 'none';
-            
+
             // Show celebration
             setTimeout(() => {
                 showCelebration();
@@ -527,18 +557,18 @@
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             noButtonEscapes++;
-            
+
             // Calculate random position with mobile-safe margins
             const buttonWidth = 150;
             const buttonHeight = 80;
             const maxX = window.innerWidth - buttonWidth - 20;
             const maxY = window.innerHeight - buttonHeight - 20;
-            
+
             const randomX = Math.max(20, Math.random() * maxX);
             const randomY = Math.max(20, Math.random() * maxY);
-            
+
             btnNo.style.position = 'fixed';
             btnNo.style.left = randomX + 'px';
             btnNo.style.top = randomY + 'px';
@@ -565,13 +595,13 @@
 
         // Desktop: mouseenter for hover escape
         btnNo.addEventListener('mouseenter', moveNoButton);
-        
+
         // Mobile & Desktop: touchstart and click
-        btnNo.addEventListener('touchstart', function(e) {
+        btnNo.addEventListener('touchstart', function (e) {
             moveNoButton(e);
         });
-        
-        btnNo.addEventListener('click', function(e) {
+
+        btnNo.addEventListener('click', function (e) {
             e.preventDefault();
             moveNoButton(e);
         });
@@ -589,14 +619,14 @@
 
         function showCelebration() {
             celebration.classList.add('active');
-            
+
             // Create continuous heart rain
             for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     createHeart();
                 }, i * 80);
             }
-            
+
             // Create multiple rounds of fireworks
             for (let round = 0; round < 3; round++) {
                 for (let i = 0; i < 8; i++) {
@@ -605,7 +635,7 @@
                     }, round * 2000 + i * 250);
                 }
             }
-            
+
             // Continue heart rain
             setInterval(() => {
                 createHeart();
@@ -619,7 +649,7 @@
             heart.style.left = Math.random() * 100 + '%';
             heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
             celebration.appendChild(heart);
-            
+
             setTimeout(() => {
                 heart.remove();
             }, 5000);
@@ -629,21 +659,21 @@
             const colors = ['#ff0', '#f0f', '#0ff', '#ff6b6b', '#4ecdc4', '#ffe66d'];
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * window.innerHeight;
-            
+
             for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 const angle = (Math.PI * 2 * i) / 30;
                 const velocity = 100 + Math.random() * 100;
                 particle.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
                 particle.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
-                
+
                 celebration.appendChild(particle);
-                
+
                 setTimeout(() => {
                     particle.remove();
                 }, 1000);
@@ -651,4 +681,5 @@
         }
     </script>
 </body>
+
 </html>
